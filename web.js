@@ -6,7 +6,7 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(request, response) {
   //response.send('Hello World!');
-  response.sendfile('index.html');
+  response.sendfile('./dist/index.html');
 });
 
 app.listen(app.get('port'), function() {
