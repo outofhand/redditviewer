@@ -8,7 +8,9 @@
  * Controller of the redditApp
  */
 angular.module('redditApp')
-  .controller('MainCtrl', function ($scope, $http, $sce, JobManager) {
+  .controller('MainCtrl', function ($scope, $http, $sce, JobManager, Reddit) {
+
+  	$scope.reddit = new Reddit();  	
 
 	$scope.definitions = {};
 	$scope.posts = [];
@@ -20,6 +22,12 @@ angular.module('redditApp')
 	    var decoded = angular.element('<textarea />').html(html_code).text();
 	    return $sce.trustAsHtml(decoded);
 	};	
+
+	$scope.getNextPage = function (subreddit) {
+		$scope.reddit = new Reddit();
+		//$scope.subreddit = subreddit;
+		$scope.reddit.nextPage(subreddit);		
+	}	
 
 	$scope.reddits = [{label: "aww"},{label: "funny"},{label: "pics"},{label: "Creatures_of_earth"},{label: "GrilledCheese"},{label: "nonononoYES"}];
 
@@ -42,7 +50,9 @@ angular.module('redditApp')
         $scope.checked2 = !$scope.checked2
         if ($scope.checked2) {
         	//$scope.getComments(postId);
-        	$scope.getComments2($scope.subreddit, postId);
+console.log('postId = ' + postId + ' subreddit = ' + $scope.subreddit);       	
+        	//$scope.getComments2($scope.subreddit, postId);
+        	$scope.getComments2(postId);        	
         }
     }   
 
@@ -287,4 +297,82 @@ angular.module('redditApp')
             return deferred.promise;             	
         }
     };
-}]);
+}])
+
+// Reddit constructor function to encapsulate HTTP and pagination logic
+.factory('Reddit', function($http) {
+  var Reddit = function() {
+    this.items = [];
+    this.busy = false;
+    this.after = '';
+  };
+
+  Reddit.prototype.nextPage = function(subreddit) {
+  	if (subreddit.length < 2) return;
+    if (this.busy) return;
+    this.busy = true;
+
+    var url = "http://api.reddit.com/r/" + subreddit + "?after=" + this.after + "&jsonp=JSON_CALLBACK";
+  	//console.log('Reddit = ' + url);
+    $http.jsonp(url).success(function(data) {
+
+	    if (data.length === 0) {
+	    	$scope.error = true;
+	    	$scope.message = 'No results found for subreddit ' + subreddit;	
+	    	console.log('error');
+	    } else {
+
+	      var items = data.data.children;
+	      for (var i = 0; i < items.length; i++) {
+	        //this.items.push(items[i].data);
+
+	        if(!items[i].data.is_self)
+	        {
+
+	          var imgurPattern = /imgur\.com/;
+
+	          if (imgurPattern.test(items[i].data.url)) {
+	            var gifvPattern = /.gifv$/;
+	            
+	            if(!gifvPattern.test(items[i].data.url))
+	            {
+	                items[i].data.url = items[i].data.url+'.png';
+
+
+	                var thumb = '';
+	                if (items[i].data.media != null) {
+	                	thumb = items[i].data.media.oembed.thumbnail_url;
+	                } else {
+	                	thumb = items[i].data.url;
+	                }
+
+	                var newItem = {
+	            	  id: items[i].data.id,
+	                  url: items[i].data.url,
+	                  title: items[i].data.title,
+	                  permalink: 'http://reddit.com'+items[i].data.permalink,
+	                  subreddit: items[i].data.subreddit,
+	                  ups: items[i].data.ups,
+	                  author: items[i].data.author,
+	                  domain: items[i].data.domain,
+	                  thumbnail: thumb,
+	                  commentCount: items[i].data.num_comments
+	                }
+
+	                 this.items.push(newItem);
+
+
+	            }
+	          }
+
+	        }
+
+	      }
+	  	}
+      this.after = "t3_" + this.items[this.items.length - 1].id;
+      this.busy = false;
+    }.bind(this));
+  };
+
+  return Reddit;
+});

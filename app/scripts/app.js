@@ -17,7 +17,8 @@ angular
     'ngSanitize',
     'ngTouch',
     'pageslide-directive',
-    'sf.treeRepeat'
+    'sf.treeRepeat',
+    'infinite-scroll'    
   ])
   .config(function ($routeProvider) {
     $routeProvider

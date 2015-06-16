@@ -1,5 +1,5 @@
 
-    <form ng-submit="findWord(subreddit)">
+    <form ng-submit="getNextPage(subreddit)">
       <div class="form-group">
         <label for="searchBox">Subreddit</label><a class="large button" href="" ng-click="toggle()"> (Subreddit List)</a>
         <input type="text" class="form-control" id="searchBox" placeholder="Enter subreddit" ng-model="subreddit">
@@ -13,63 +13,59 @@
     <h3>Images from {{subreddit}}</h3>
     <div class="row marketing" id="images">
         <div id="images" class="col-xs-12">
-            <div class="thumbnail" ng-repeat="post in posts">
-<!--                <img ng-src="{{post.url}}" alt="{{post.title}}" class="img-responsive img-rounded" />
-                <br /> -->
-                <img ng-src="{{post.thumbnail}}" alt="{{post.title}}" class="img-responsive img-rounded" />
 
-                <div class="caption">
-                    <p class="text-muted">{{post.title}}</p>
-                    <small>
-                        <a href="{{post.permalink}}" target="_blank"><span class="label label-warning"><span class="fa fa-comment"> comments</span></span></a>
-                        <a href="http://www.reddit.com/r/{{post.subreddit}}" target="_blank"><span class="fa fa-reddit"> {{post.subreddit}}</span></a>
-                        <span class="label label-warning"><span class="fa fa-arrow-up"> {{post.ups}}</span></span>
-                        <span class="label label-default"><span class="fa fa-user"> {{post.author}}</span></span>
-                        <a href="{{post.url}}" target="_blank"><span class="fa fa-image"> {{post.domain}}</span></a>
-                        <!-- <button type="submit" class="btn btn-default btn-xs" ng-click="getComments(post.id)">Get Comments</button> -->
-                        <!-- <button type="submit" class="btn btn-default btn-xs" ng-click="toggle2(post.id)">Get Comments ({{post.commentCount}})</button> -->
-                        <button type="submit" class="btn btn-default btn-xs" ng-click="getComments2(post.id)">Get Comments ({{post.commentCount}})</button>                        
-                    </small>
+            <div infinite-scroll='reddit.nextPage(subreddit)' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='1'>
+                <div class="thumbnail" ng-repeat="item in reddit.items">
+                    <img ng-src="{{item.thumbnail}}" alt="{{item.title}}" class="img-responsive img-rounded" />
+                    <div class="caption">
+                        <p class="text-muted">{{item.title}}</p>
+                        <small>
+                            <a href="{{item.permalink}}" target="_blank"><span class="label label-warning"><span class="fa fa-comment"> comments</span></span></a>
+                            <a href="http://www.reddit.com/r/{{item.subreddit}}" target="_blank"><span class="fa fa-reddit"> {{item.subreddit}}</span></a>
+                            <span class="label label-warning"><span class="fa fa-arrow-up"> {{item.ups}}</span></span>
+                            <span class="label label-default"><span class="fa fa-user"> {{item.author}}</span></span>
+                            <a href="{{item.url}}" target="_blank"><span class="fa fa-image"> {{item.domain}}</span></a>
+<!--                             <button type="submit" class="btn btn-default btn-xs" ng-click="toggle2(item.id)">Get Comments</button> -->
+                            <button type="submit" class="btn btn-default btn-xs" ng-click="getComments2(item.id)">Get Comments ({{item.commentCount}}}</button>
+                        </small>
+                    </div> 
 
-<!--                 <div class="thumbnail" ng-repeat="comment in comments">
-                    <p>Author: {{comment.author}} - {{comment.comment}}</p>
-                </div>    --> 
+                    <div ng-show="checked2">
+                        <div style="padding:20px">
+                            <h2>Comments</h2><button type="submit" class="btn btn-default" ng-click="toggleComments()">Close</button>
 
-                </div> 
+                                <div ng-repeat='member in treeData[1].data.children'>
 
+                                    <div ng-repeat='mem in member'>
+                                        <div ng-if="mem.author"><span class="label label-default"><span class="fa fa-user">{{mem.author}}</span></span></div>
+                                        <div ng-if="mem.body"><p ng-bind-html="renderHTML(mem.body_html)"></p></div>
 
-                <div ng-show="checked2">
-                    <div style="padding:20px">
-                        <h2>Comments</h2><button type="submit" class="btn btn-default" ng-click="toggleComments()">Close</button>
+                                        <script type="text/ng-template" id="categoryTree">
+                                            <span class="label label-default"><span class="fa fa-user">{{x.data.author}}</span></span>
+                                            <br />{{ x.data.body }}
+                                            <ul>
+                                                <li ng-repeat="x in x.data.replies.data.children" ng-include="'categoryTree'">
 
-                            <div ng-repeat='member in treeData[1].data.children'>
-
-                                <div ng-repeat='mem in member'>
-                                    <div ng-if="mem.author"><span class="label label-default"><span class="fa fa-user">{{mem.author}}</span></span></div>
-                                    <div ng-if="mem.body"><p ng-bind-html="renderHTML(mem.body_html)"></p></div>
-
-                                    <script type="text/ng-template" id="categoryTree">
-                                        <span class="label label-default"><span class="fa fa-user">{{x.data.author}}</span></span>
-                                        <br />{{ x.data.body }}
+                                                </li>
+                                            </ul>
+                                        </script>
                                         <ul>
-                                            <li ng-repeat="x in x.data.replies.data.children" ng-include="'categoryTree'">
+                                            <li ng-repeat="x in mem.replies.data.children" ng-include="'categoryTree'"></li>
+                                        </ul>    
 
-                                            </li>
-                                        </ul>
-                                    </script>
-                                    <ul>
-                                        <li ng-repeat="x in mem.replies.data.children" ng-include="'categoryTree'"></li>
-                                    </ul>    
+                                    </div>
+                                </div>               
 
-                                </div>
-                            </div>               
+                        </div>
+                    </div>    
 
-                    </div>
-                </div>    
+                </div>
 
+                <div ng-show='reddit.busy'>Loading data...</div>
+            </div>            
 
 
-            </div>
+
         </div>
     </div>
 
@@ -137,3 +133,6 @@
             <button type="submit" class="btn btn-default" ng-click="toggle2()">Close</button>
         </div>
     </div>       
+
+
+  
