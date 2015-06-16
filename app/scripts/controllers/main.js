@@ -231,7 +231,7 @@ console.log('postId = ' + postId + ' subreddit = ' + $scope.subreddit);
 	  }
 
   $scope.getComments2 = function(id) {
-     $http.get("http://www.reddit.com/r/" + $scope.subreddit + "/comments/" + id + ".json").then(function (response) {
+     $http.get("https://www.reddit.com/r/" + $scope.subreddit + "/comments/" + id + ".json").then(function (response) {
            $scope.treeData = response.data;
            $scope.toggleComments();
            //$scope.checked2 = !$scope.checked2;
@@ -247,7 +247,7 @@ console.log('postId = ' + postId + ' subreddit = ' + $scope.subreddit);
             var deferred = $q.defer();
 
 
-		    var url = "http://api.reddit.com/r/" + subreddit + "/.json?limit=5&jsonp=JSON_CALLBACK";
+		    var url = "https://api.reddit.com/r/" + subreddit + "/.json?limit=5&jsonp=JSON_CALLBACK";
 
 		    $http.jsonp(url).success(function(data) {
 
@@ -262,7 +262,7 @@ console.log('postId = ' + postId + ' subreddit = ' + $scope.subreddit);
         },
         getNext: function (subreddit, next) {
             var deferred = $q.defer();
-			var url = "http://api.reddit.com/r/" + subreddit + "/.json?&after=" + next + "&jsonp=JSON_CALLBACK";
+			var url = "https://api.reddit.com/r/" + subreddit + "/.json?&after=" + next + "&jsonp=JSON_CALLBACK";
         	//http://www.reddit.com/r/gaming/top.json?limit=5&after=t3_12vgdt
 
 		    $http.jsonp(url).success(function(data) {
@@ -279,7 +279,7 @@ console.log('postId = ' + postId + ' subreddit = ' + $scope.subreddit);
         },
         getComments: function (subreddit, postId) {
             var deferred = $q.defer();
-            var url = "http://api.reddit.com/r/" + subreddit + "/comments/" + postId + ".json?jsonp=JSON_CALLBACK";
+            var url = "https://api.reddit.com/r/" + subreddit + "/comments/" + postId + ".json?jsonp=JSON_CALLBACK";
             //var url = "http://api.reddit.com/r/aww/comments/37ujsr/.json&jsonp=JSON_CALLBACK";
 			//var url = "http://api.reddit.com/r/" + subreddit + "/.json?&after=" + next + "&jsonp=JSON_CALLBACK";
         	//var url="http://www.reddit.com/r/gaming/top.json?limit=5";
@@ -312,7 +312,7 @@ console.log('postId = ' + postId + ' subreddit = ' + $scope.subreddit);
     if (this.busy) return;
     this.busy = true;
 
-    var url = "http://api.reddit.com/r/" + subreddit + "?after=" + this.after + "&jsonp=JSON_CALLBACK";
+    var url = "https://api.reddit.com/r/" + subreddit + "?after=" + this.after + "&jsonp=JSON_CALLBACK";
   	//console.log('Reddit = ' + url);
     $http.jsonp(url).success(function(data) {
 
