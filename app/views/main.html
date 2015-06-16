@@ -10,7 +10,7 @@
     <div class="spinner" ng-show="spinner"><img src="images/spiffygif_30x30.gif"/></div>
     <div ng-show="error">{{message}}</div>
 
-    <h3>Images from {{subreddit}}</h3>
+    <h3 ng-show="subreddit">Images from {{subreddit}}</h3>
     <div class="row marketing" id="images">
         <div id="images" class="col-xs-12">
 
