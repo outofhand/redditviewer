@@ -14,7 +14,7 @@ angular.module('redditApp')
 
 	$scope.definitions = {};
 	$scope.posts = [];
-	$scope.subreddit = 'aww';
+	$scope.subreddit = '';
 	$scope.nextPage = '';
 
 	$scope.renderHTML = function(html_code)
@@ -29,7 +29,7 @@ angular.module('redditApp')
 		$scope.reddit.nextPage(subreddit);		
 	}	
 
-	$scope.reddits = [{label: "aww"},{label: "funny"},{label: "pics"},{label: "Creatures_of_earth"},{label: "GrilledCheese"},{label: "nonononoYES"}];
+	$scope.reddits = [{label: "awww"},{label: "funny"},{label: "pics"},{label: "Creatures_of_earth"},{label: "GrilledCheese"},{label: "nonononoYES"}];
 
 	$scope.setSelected = function (reddit) {
 		$scope.subreddit = reddit;

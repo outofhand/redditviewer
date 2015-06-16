@@ -69,7 +69,7 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-default" ng-click="getNext()">Next Page</button>
+<!--     <button type="submit" class="btn btn-default" ng-click="getNext()">Next Page</button> -->
 
     <div pageslide ps-open="checked" ps-side="left">
         <div style="padding:20px" id="demo-right">
@@ -80,59 +80,31 @@
                   <li ng-repeat="reddit in reddits" ng-click="setSelected(reddit.label)">{{reddit.label}}</li>
               </ul>                        
 
-<!--                         <ul>
-                <li>aww</li>
-                <li>funny</li>
-                <li>pics</li>
-                <li>gifs</li>
-                <li>RedditGetsDrawn</li>
-                <li>GIFextra</li>                                                        
-                <li>52weeksofcooking</li>
-                <li>nonononoYES</li>
-                <li>ColorizedHistory</li>
-                <li>GrilledCheese</li>
-                <li>Creatures_of_earth</li>
-                <li>WTF</li>  
-            </ul> -->
-            <!-- <a ng-click="toggle()" class="button" >Close</a> -->
             <button type="submit" class="btn btn-default" ng-click="toggle()">Close</button>
         </div>
     </div>   
 
-    <div pageslide ps-open="checked2" size="40%">
+<!--     <div pageslide ps-open="checked2" size="40%">
         <div style="padding:20px" id="demo-right2">
             <button type="submit" class="btn btn-default" ng-click="toggle2()">Close</button>
             <h2>Comments</h2>
-
                 <div ng-repeat='member in treeData[1].data.children'>
-
                     <div ng-repeat='mem in member'>
                         <div ng-if="mem.author"><span class="label label-default"><span class="fa fa-user">{{mem.author}}</span></span></div>
                         <div ng-if="mem.body"><p ng-bind-html="renderHTML(mem.body_html)"></p></div>
-
                         <script type="text/ng-template" id="categoryTree">
                             <span class="label label-default"><span class="fa fa-user">{{x.data.author}}</span></span>
                             <br />{{ x.data.body }}
                             <ul>
                                 <li ng-repeat="x in x.data.replies.data.children" ng-include="'categoryTree'">
-
                                 </li>
                             </ul>
                         </script>
                         <ul>
                             <li ng-repeat="x in mem.replies.data.children" ng-include="'categoryTree'"></li>
                         </ul>    
-
                     </div>
                 </div>               
-
-<!--               <ul>
-                  <li ng-repeat="comment in comments"><p>Author: {{comment.author}} - {{comment.comment}}</p></li>
-              </ul>  -->                       
-
             <button type="submit" class="btn btn-default" ng-click="toggle2()">Close</button>
         </div>
-    </div>       
-
-
-  
+    </div>  -->     
