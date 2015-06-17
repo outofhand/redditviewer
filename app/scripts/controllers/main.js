@@ -8,6 +8,46 @@
  * Controller of the redditApp
  */
 angular.module('redditApp')
+
+	.directive("stickyNav", function stickyNav($window){  
+	  function stickyNavLink(scope, element){
+	    var w = angular.element($window),
+	        size = element[0].clientHeight,
+	        top = 0;
+
+	    function toggleStickyNav(){
+console.log('top = ' + top + ' size = ' + size + ' Y = ' + $window.pageYOffset);	    	
+	      if(!element.hasClass('controls-fixed') && $window.pageYOffset > top + size){
+	        element.addClass('controls-fixed');
+	      } else if(element.hasClass('controls-fixed') && $window.pageYOffset <= top + size){
+	        element.removeClass('controls-fixed');
+	      }
+	    }
+
+	    scope.$watch(function(){
+	      return element[0].getBoundingClientRect().top + $window.pageYOffset;
+	    }, function(newValue, oldValue){
+	      if(newValue !== oldValue && !element.hasClass('controls-fixed')){
+	        top = newValue;
+	      }
+	    });
+
+	    w.bind('resize', function stickyNavResize(){
+	      element.removeClass('controls-fixed');
+	      //top = element[0].getBoundingClientRect().top + $window.pageYOffset;      
+	      top = $window.pageYOffset;
+	      toggleStickyNav();
+	    });
+	    w.bind('scroll', toggleStickyNav);
+	  }
+
+	  return {
+	    scope: {},
+	    restrict: 'A',
+	    link: stickyNavLink
+	  };
+	})
+
   .controller('MainCtrl', function ($scope, $http, $sce, Reddit) {
 
 	$scope.reddits = [

@@ -1,4 +1,5 @@
-
+<a id="top-scroll" name="top"></a>
+ 
     <form ng-submit="getNextPage(subreddit)">
       <div class="form-group">
         <label for="searchBox">Subreddit</label><a class="large button" href="" ng-click="toggle()"> (Subreddit List)</a>
@@ -81,3 +82,10 @@
             <button type="submit" class="btn btn-default" ng-click="toggle2()">Close</button>
         </div>
     </div>      
+
+
+<section sticky-nav class="controls-fixed">  
+    <button scroll-to="top-scroll" duration="800" easing="easeInQuint" offset="120"><i class="fa fa-arrow-circle-up"></i></button>
+</section sticky-nav>  
+
+<!-- <div class="back-to-top" scroll-to-item scroll-to="#top-scroll"><i class="fa fa-arrow-circle-up"></i></div> -->

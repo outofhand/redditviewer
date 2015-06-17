@@ -23,8 +23,38 @@
             }
             .ng-pageslide {
                 background: #eee;
+            }     
+            
+            .back-to-top {
+            background: none;
+            margin: 0;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 70px;
+            height: 70px;
+            z-index: 100;
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #ff9000;
+            cursor: pointer;
+            }
+
+            .back-to-top i {
+              font-size: 60px;
+            }
+
+            .controls-fixed{
+              background-color:rgba(0, 0, 0, 0.1);
+              bottom:0;
+              left:0;
+              padding:10px 15px;
+              position:fixed;
+              top:auto;
+              width:100%;
             }            
-        </style>    
+
+        </style>   
   </head>
   <body ng-app="redditApp">
     <!--[if lt IE 7]>
@@ -70,6 +100,7 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/ngSmoothScroll/angular-smooth-scroll.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

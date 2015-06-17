@@ -18,7 +18,8 @@ angular
     'ngTouch',
     'pageslide-directive',
     'sf.treeRepeat',
-    'infinite-scroll'    
+    'infinite-scroll',
+    'smoothScroll'    
   ])
   .config(function ($routeProvider) {
     $routeProvider
