@@ -167,5 +167,7 @@ div.header>h4 {
     }
 }
 
-
+span.pointer {
+    cursor: pointer;
+} 
 
