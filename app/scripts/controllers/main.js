@@ -16,7 +16,7 @@ angular.module('redditApp')
 	        top = 0;
 
 	    function toggleStickyNav(){
-console.log('top = ' + top + ' size = ' + size + ' Y = ' + $window.pageYOffset);	    	
+		  //console.log('top = ' + top + ' size = ' + size + ' Y = ' + $window.pageYOffset);	    	
 	      if(!element.hasClass('controls-fixed') && $window.pageYOffset > top + size){
 	        element.addClass('controls-fixed');
 	      } else if(element.hasClass('controls-fixed') && $window.pageYOffset <= top + size){
@@ -48,9 +48,11 @@ console.log('top = ' + top + ' size = ' + size + ' Y = ' + $window.pageYOffset);
 	  };
 	})
 
-  .controller('MainCtrl', function ($scope, $http, $sce, Reddit) {
+  .controller('MainCtrl', function ($scope, $http, $sce, $localStorage, Reddit, commentsTab) {
+	
+	loadReddits();
 
-	$scope.reddits = [
+/*	$localStorage.reddits = [
 		{label: "awww"},
 		{label: "funny"},
 		{label: "pics"},
@@ -59,7 +61,9 @@ console.log('top = ' + top + ' size = ' + size + ' Y = ' + $window.pageYOffset);
 		{label: "nonononoYES"},
 		{label: "UNBGBBIIVCHIDCTIICBG"},
 		{label: "wtf"}
-	];
+	];*/
+
+	//$scope.reddits = $localStorage.reddits;
 
   	$scope.reddit = new Reddit();  	
 
@@ -67,6 +71,52 @@ console.log('top = ' + top + ' size = ' + size + ' Y = ' + $window.pageYOffset);
 	$scope.posts = [];
 	$scope.subreddit = '';
 	$scope.nextPage = '';
+	$scope.newSubreddit = '';
+	$scope.showMeta = false;	
+
+	function isUndefinedOrNull(val) {
+	    return angular.isUndefined(val) || val === null 
+	}	
+
+	function loadReddits() {
+		//if ( $localStorage.reddits == '' ) {
+		if ( isUndefinedOrNull($localStorage.reddits) ) {
+			$localStorage.reddits = [
+				{label: "awww"},
+				{label: "funny"},
+				{label: "pics"},
+				{label: "Creatures_of_earth"},
+				{label: "GrilledCheese"},
+				{label: "nonononoYES"},
+				{label: "UNBGBBIIVCHIDCTIICBG"},
+				{label: "wtf"}
+			];
+		} 
+
+		$scope.reddits = $localStorage.reddits;
+
+		//console.log('reddits = ' + $localStorage.reddits);		
+	};
+
+	$scope.clearComments = function () {
+		$scope.checked2 = false;
+	}
+
+	$scope.closeComments = function () {
+		$scope.checked2 = commentsTab.toggle();
+		console.log('checked = ' + $scope.checked2);
+	};
+
+	$scope.addSubreddit = function (newSubreddit) {
+		$scope.reddits.push( {label: newSubreddit} );
+		$scope.newSubreddit = '';
+		$localStorage.reddits = $scope.reddits;
+	};
+
+	$scope.removeSubreddit = function ($index) {
+  		$scope.reddits.splice($index,1); 
+  		$localStorage.reddits = $scope.reddits;
+	}
 
 	$scope.renderHTML = function(html_code)
 	{
@@ -76,6 +126,7 @@ console.log('top = ' + top + ' size = ' + size + ' Y = ' + $window.pageYOffset);
 
 	// get the reddit posts for the subreddit selected
 	$scope.getNextPage = function (subreddit) {
+		$scope.toggle();
 		$scope.reddit = new Reddit();
 		$scope.reddit.nextPage(subreddit);		
 	}	
@@ -101,8 +152,7 @@ console.log('top = ' + top + ' size = ' + size + ' Y = ' + $window.pageYOffset);
         	$scope.reddit.getComments($scope.subreddit, postId); 
         	//$scope.checked2 = !$scope.checked2;     	
         }
-    }  
-
+    }   
 	$scope.getComments2 = function(id) {
 	   $http.get("https://www.reddit.com/r/" + $scope.subreddit + "/comments/" + id + ".json").then(function (response) {
 	   	console.log('response data = ' + response.data[1].data.children);
@@ -117,10 +167,27 @@ console.log('top = ' + top + ' size = ' + size + ' Y = ' + $window.pageYOffset);
 		         $scope.treeData = response.data;
 		         $scope.checked2 = !$scope.checked2;
 		    }
+		            commentsTab.toggle();
 	    }); 
 	}	     
 
   })
+
+.factory('commentsTab', function() {
+
+    var commentControl = {};
+
+    this.on = false;
+
+    commentControl.toggle = function () {
+    	this.on = !this.on;
+    	console.log('this = ' + this.on);
+    	return this.on;
+    }
+
+    return commentControl;
+
+})
 
 // Reddit constructor function to encapsulate HTTP and pagination logic
 .factory('Reddit', function($http) {

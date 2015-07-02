@@ -171,3 +171,29 @@ span.pointer {
     cursor: pointer;
 } 
 
+ul
+{
+    list-style-type: none;
+}
+
+#redditlist {
+  padding: 10px 0;
+}
+
+.ng-hide-add  { 
+  animation:0.5s flipOutX ease; 
+}
+
+.ng-hide-remove { 
+  animation:0.5s flipInX ease; 
+}
+
+.container {
+  width: 100%;
+/*  border: 1px solid black;*/
+}
+
+#mainbox {
+  width: 100%;
+/*  border: 1px solid red;*/
+}

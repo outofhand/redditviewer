@@ -19,7 +19,8 @@ angular
     'pageslide-directive',
     'sf.treeRepeat',
     'infinite-scroll',
-    'smoothScroll'    
+    'smoothScroll',
+    'ngStorage'    
   ])
   .config(function ($routeProvider) {
     $routeProvider
