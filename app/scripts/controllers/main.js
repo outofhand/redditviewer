@@ -52,19 +52,6 @@ angular.module('redditApp')
 	
 	loadReddits();
 
-/*	$localStorage.reddits = [
-		{label: "awww"},
-		{label: "funny"},
-		{label: "pics"},
-		{label: "Creatures_of_earth"},
-		{label: "GrilledCheese"},
-		{label: "nonononoYES"},
-		{label: "UNBGBBIIVCHIDCTIICBG"},
-		{label: "wtf"}
-	];*/
-
-	//$scope.reddits = $localStorage.reddits;
-
   	$scope.reddit = new Reddit();  	
 
 	$scope.definitions = {};
@@ -79,7 +66,6 @@ angular.module('redditApp')
 	}	
 
 	function loadReddits() {
-		//if ( $localStorage.reddits == '' ) {
 		if ( isUndefinedOrNull($localStorage.reddits) ) {
 			$localStorage.reddits = [
 				{label: "awww"},
@@ -94,8 +80,6 @@ angular.module('redditApp')
 		} 
 
 		$scope.reddits = $localStorage.reddits;
-
-		//console.log('reddits = ' + $localStorage.reddits);		
 	};
 
 	$scope.clearComments = function () {
@@ -146,11 +130,9 @@ angular.module('redditApp')
     // toggle for comments slider
     $scope.checked2 = false; // This will be binded using the ps-open attribute
     $scope.toggle2 = function(postId){
-    	//$scope.reddit.getComments($scope.subreddit, postId); 
         $scope.checked2 = !$scope.checked2
         if ($scope.checked2) {
         	$scope.reddit.getComments($scope.subreddit, postId); 
-        	//$scope.checked2 = !$scope.checked2;     	
         }
     }   
 	$scope.getComments2 = function(id) {
@@ -167,7 +149,8 @@ angular.module('redditApp')
 		         $scope.treeData = response.data;
 		         $scope.checked2 = !$scope.checked2;
 		    }
-		            commentsTab.toggle();
+		    
+		    commentsTab.toggle();
 	    }); 
 	}	     
 
@@ -216,7 +199,6 @@ angular.module('redditApp')
 
 	      var items = data.data.children;
 	      for (var i = 0; i < items.length; i++) {
-	        //this.items.push(items[i].data);
 
 	        if(!items[i].data.is_self)
 	        {
@@ -269,9 +251,6 @@ angular.module('redditApp')
     if (this.commentsBusy) return;
     this.commentsBusy = true;
 
-    //var url = "http://api.reddit.com/r/" + subreddit + "/comments/" + postId + ".json?jsonp=JSON_CALLBACK";
-    ////var url = "https://www.reddit.com/r/" + subreddit + "/comments/" + postId + ".json"
-    //$http.jsonp(url).success(function(data) {  
     $http.get("https://www.reddit.com/r/" + subreddit + "/comments/" + postId + ".json").then(function (response) {	
 
 	    if (response.data[1].data.children.length === 0) {
